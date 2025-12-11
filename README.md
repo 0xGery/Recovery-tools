@@ -1,41 +1,41 @@
-#  0xio Wallet Recovery Tool
+# 0xio Wallet Recovery Tool
 
 > Recover your 0xio wallet address and private key from your 12-word BIP39 seed phrase
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org)
 
-##  Quick Start
+## Quick Start
 
-###  Use Online (Easiest - No Installation)
+### Use Online (Easiest - No Installation)
 
 **Just open this URL in your browser:**
 
 ```
-https://YOUR-USERNAME.github.io/0xio-wallet-recovery/mnemonic-to-wallet.html
+https://0xgery.github.io/Recovery-tools/
 ```
 
- That's it! Works on **any device** - desktop, mobile, tablet.
+That's it! Works on **any device** - desktop, mobile, tablet.
 
-###  Use Offline (Most Secure)
+### Use Offline (Most Secure)
 
 ```bash
 # Clone and run
-git clone https://github.com/YOUR-USERNAME/0xio-wallet-recovery.git
-cd 0xio-wallet-recovery
+git clone https://github.com/0xGery/Recovery-tools.git
+cd Recovery-tools
 npm install
 node mnemonic-to-wallet.js "word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12"
 ```
 
-##  What This Tool Does
+## What This Tool Does
 
 Converts your **12-word seed phrase** into:
 
 | Input | Output |
 |-------|--------|
-|  12-word mnemonic | →  Wallet Address (`octXXXXX...`) |
-| | →  Private Key (Base64) |
-| | →  Public Key (Base64) |
+| 12-word mnemonic | → Wallet Address (`octXXXXX...`) |
+| | → Private Key (Base64) |
+| | → Public Key (Base64) |
 
 ### Example
 
@@ -51,39 +51,39 @@ Private Key:  KzNHm/LbrzxPiJTpcHJGw8Ozxtvr3LXN3x+oBFO+TtQ=
 Public Key:   U0n18IQBPt+j2DJjHaEFzs3IfmAHiUNFKUhf/a3ImPQ=
 ```
 
- **Never use this example mnemonic for real funds!** It's publicly known.
+**WARNING:** Never use this example mnemonic for real funds! It's publicly known.
 
-##  Features
+## Features
 
--  **Two Versions**: Browser (HTML) & CLI (Node.js)
--  **No Installation** (browser version)
--  **Fully Offline** capable
--  **Mobile Friendly** responsive design
--  **One-Click Copy** to clipboard
--  **100% Client-Side** - no data transmitted
--  **Open Source** - verify the code yourself
--  **BIP39 Standard** compliant
--  **Battle Tested** with comprehensive test suite
+- **Two Versions**: Browser (HTML) & CLI (Node.js)
+- **No Installation** (browser version)
+- **Fully Offline** capable
+- **Mobile Friendly** responsive design
+- **One-Click Copy** to clipboard
+- **100% Client-Side** - no data transmitted
+- **Open Source** - verify the code yourself
+- **BIP39 Standard** compliant
+- **Battle Tested** with comprehensive test suite
 
-##  Use Cases
+## Use Cases
 
 | Scenario | Solution |
 |----------|----------|
-|  Lost browser extension data | Recover wallet with seed phrase |
-|  New workplace computer | Use browser version (no admin rights needed) |
-|  Setting up new device | CLI version for quick import |
-|  Verify backup | Confirm seed phrase generates correct address |
-|  Mobile recovery | Open in phone browser |
+| Lost browser extension data | Recover wallet with seed phrase |
+| New workplace computer | Use browser version (no admin rights needed) |
+| Setting up new device | CLI version for quick import |
+| Verify backup | Confirm seed phrase generates correct address |
+| Mobile recovery | Open in phone browser |
 
-##  Security
+## Security
 
 ### Why It's Safe
 
-1. ** Client-Side Only**: All cryptography runs in YOUR browser/computer
-2. ** Zero Network Calls**: No data sent to any server
-3. ** Open Source**: Inspect every line of code
-4. ** Standard Crypto**: Uses BIP39, PBKDF2, Ed25519, TweetNaCl
-5. ** HTTPS**: GitHub Pages uses SSL/TLS encryption
+1. **Client-Side Only**: All cryptography runs in YOUR browser/computer
+2. **Zero Network Calls**: No data sent to any server
+3. **Open Source**: Inspect every line of code
+4. **Standard Crypto**: Uses BIP39, PBKDF2, Ed25519, TweetNaCl
+5. **HTTPS**: GitHub Pages uses SSL/TLS encryption
 
 ### Maximum Security Mode
 
@@ -91,15 +91,15 @@ For paranoid users (recommended for large amounts):
 
 ```bash
 # 1. Download files
-curl -O https://raw.githubusercontent.com/YOUR-USERNAME/0xio-wallet-recovery/main/mnemonic-to-wallet.html
+curl -O https://raw.githubusercontent.com/0xGery/Recovery-tools/main/index.html
 mkdir -p libs
-curl -o libs/nacl.min.js https://raw.githubusercontent.com/YOUR-USERNAME/0xio-wallet-recovery/main/libs/nacl.min.js
+curl -o libs/nacl.min.js https://raw.githubusercontent.com/0xGery/Recovery-tools/main/libs/nacl.min.js
 
 # 2. Disconnect from internet
 # (Turn off WiFi)
 
-# 3. Open mnemonic-to-wallet.html in browser
-open mnemonic-to-wallet.html
+# 3. Open index.html in browser
+open index.html
 
 # 4. Recover wallet
 
@@ -108,15 +108,16 @@ open mnemonic-to-wallet.html
 # 6. Reconnect to internet
 ```
 
-##  Documentation
+## Documentation
 
 | Document | Description |
 |----------|-------------|
 | [QUICK-START.md](QUICK-START.md) | Fast-track guide to recover your wallet |
 | [WALLET-RECOVERY-TOOL.md](WALLET-RECOVERY-TOOL.md) | Complete technical documentation |
-| [.github-deployment.md](.github-deployment.md) | GitHub Pages deployment guide |
+| [GITHUB-PAGES-SETUP.md](GITHUB-PAGES-SETUP.md) | GitHub Pages deployment guide |
+| [INDEX.md](INDEX.md) | Complete file directory |
 
-##  Technical Details
+## Technical Details
 
 ### Derivation Process
 
@@ -151,7 +152,7 @@ Address (oct + Base58)
 - Node.js ≥ 14.0.0
 - `tweetnacl` (installed via npm)
 
-## 🧪 Testing
+## Testing
 
 Run the comprehensive test suite:
 
@@ -162,14 +163,14 @@ npm test
 
 Expected output:
 ```
- Test 1: Valid 12-word mnemonic recovery
- Test 2: Invalid word count rejection
- Test 3: Empty mnemonic rejection
- Test 4: Mnemonic normalization
- Test 5: Case insensitivity
+✓ Test 1: Valid 12-word mnemonic recovery
+✓ Test 2: Invalid word count rejection
+✓ Test 3: Empty mnemonic rejection
+✓ Test 4: Mnemonic normalization
+✓ Test 5: Case insensitivity
 ```
 
-##  Advanced Usage
+## Advanced Usage
 
 ### Use as a Module
 
@@ -206,19 +207,19 @@ After recovering your wallet:
    - **Wallet Address**: (from recovery tool)
 4. Submit
 
-##  Browser Compatibility
+## Browser Compatibility
 
 | Browser | Supported | Notes |
 |---------|-----------|-------|
-| Chrome |  Yes | Full support |
-| Firefox |  Yes | Full support |
-| Safari |  Yes | Full support |
-| Edge |  Yes | Full support |
-| Opera |  Yes | Full support |
-| Mobile Safari |  Yes | iOS 10+ |
-| Chrome Mobile |  Yes | Android 5+ |
+| Chrome | ✓ Yes | Full support |
+| Firefox | ✓ Yes | Full support |
+| Safari | ✓ Yes | Full support |
+| Edge | ✓ Yes | Full support |
+| Opera | ✓ Yes | Full support |
+| Mobile Safari | ✓ Yes | iOS 10+ |
+| Chrome Mobile | ✓ Yes | Android 5+ |
 
-## 🤝 Contributing
+## Contributing
 
 This tool was reverse-engineered from the legacy 0xio extension. Contributions welcome!
 
@@ -232,11 +233,11 @@ This tool was reverse-engineered from the legacy 0xio extension. Contributions w
 6. Push: `git push origin feature/improvement`
 7. Open a Pull Request
 
-##  License
+## License
 
 MIT License - see [LICENSE](LICENSE) file for details
 
-##  Disclaimer
+## Disclaimer
 
 **Use at your own risk.**
 
@@ -246,7 +247,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 - Authors are not responsible for any loss of funds
 - Not affiliated with official 0xio development team
 
-##  Support
+## Support
 
 ### Common Issues
 
@@ -265,23 +266,23 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ### Get Help
 
--  Check [QUICK-START.md](QUICK-START.md)
--  Read [WALLET-RECOVERY-TOOL.md](WALLET-RECOVERY-TOOL.md)
--  [Open an issue](https://github.com/YOUR-USERNAME/0xio-wallet-recovery/issues)
+- Check [QUICK-START.md](QUICK-START.md)
+- Read [WALLET-RECOVERY-TOOL.md](WALLET-RECOVERY-TOOL.md)
+- [Open an issue](https://github.com/0xGery/Recovery-tools/issues)
 
-##  Similar Projects
+## Similar Projects
 
 - [iancoleman/bip39](https://github.com/iancoleman/bip39) - BIP39 tool
 - [bitcoin/bips](https://github.com/bitcoin/bips) - Bitcoin standards
 
-##  Stats
+## Stats
 
 - **Lines of Code**: ~600 (HTML + JS)
 - **Dependencies**: 1 (TweetNaCl)
 - **Test Coverage**: 5 core tests
 - **File Size**: ~35 KB total
 
-##  Acknowledgments
+## Acknowledgments
 
 - Original 0xio wallet extension developers
 - TweetNaCl cryptography library
@@ -292,10 +293,14 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 <div align="center">
 
-**Made with  for 0xio Wallet Users**
+**Made for 0xio Wallet Users**
 
-[Report Bug](https://github.com/YOUR-USERNAME/0xio-wallet-recovery/issues) ·
-[Request Feature](https://github.com/YOUR-USERNAME/0xio-wallet-recovery/issues) ·
+**Live Tool**: [https://0xgery.github.io/Recovery-tools/](https://0xgery.github.io/Recovery-tools/)
+
+**Repository**: [https://github.com/0xGery/Recovery-tools](https://github.com/0xGery/Recovery-tools)
+
+[Report Bug](https://github.com/0xGery/Recovery-tools/issues) ·
+[Request Feature](https://github.com/0xGery/Recovery-tools/issues) ·
 [Documentation](WALLET-RECOVERY-TOOL.md)
 
 </div>

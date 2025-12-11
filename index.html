@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>0x Recovery</title>
-    <!-- Inter Font for that clean modern look -->
+    <title>0xio Recovery</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -270,6 +269,26 @@
             margin: 0 auto;
         }
 
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--text-primary);
+            border-bottom-color: var(--text-primary);
+        }
+
         @keyframes rotation {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -367,6 +386,10 @@
                 </div>
 
             </div>
+        </div>
+
+        <div class="footer">
+            Open Source. The source code of this tool is available at <a href="https://github.com/0xGery/Recovery-tools" target="_blank">github.com/0xGery/Recovery-tools</a>
         </div>
     </div>
 
