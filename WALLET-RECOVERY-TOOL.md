@@ -2,7 +2,7 @@
 
 This tool allows you to recover your wallet address and private key from your BIP39 seed phrase (mnemonic).
 
-## 🔒 Security Warning
+##  Security Warning
 
 **NEVER share your seed phrase or private key with anyone!**
 
@@ -11,14 +11,14 @@ This tool allows you to recover your wallet address and private key from your BI
 - Keep your seed phrase and private key secure
 - Only use these tools on a trusted, secure device
 
-## 📋 What You Get
+##  What You Get
 
 From your 12-word seed phrase, this tool derives:
 - **Wallet Address** - Your public Octra wallet address (starting with `oct`)
 - **Private Key** - Your private key in Base64 format
 - **Public Key** - Your public key in Base64 format
 
-## 🌐 Browser Version (HTML)
+##  Browser Version (HTML)
 
 ### Usage
 
@@ -40,7 +40,7 @@ From your 12-word seed phrase, this tool derives:
 - Modern web browser (Chrome, Firefox, Safari, Edge)
 - The `libs/nacl.min.js` file must be in the same directory structure
 
-## 💻 Command Line Version (Node.js)
+##  Command Line Version (Node.js)
 
 ### Installation
 
@@ -68,11 +68,11 @@ node mnemonic-to-wallet.js "abandon ability able about above absent absorb abstr
 ║    0xio Wallet Recovery Tool - CLI Version    ║
 ╚════════════════════════════════════════════════╝
 
-⚠️  Security Warning: Never share your seed phrase or private key!
+  Security Warning: Never share your seed phrase or private key!
 
 Processing seed phrase...
 
-✓ Wallet recovered successfully!
+ Wallet recovered successfully!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Wallet Information:
@@ -88,7 +88,7 @@ Public Key (Base64):
   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-## 🔧 How It Works
+##  How It Works
 
 The tool follows the official 0xio wallet derivation process:
 
@@ -102,13 +102,13 @@ The tool follows the official 0xio wallet derivation process:
 
 This is the exact same process used by the official 0xio wallet extension.
 
-## 📁 Files
+##  Files
 
 - `mnemonic-to-wallet.html` - Browser-based recovery tool (standalone, user-friendly)
 - `mnemonic-to-wallet.js` - Node.js CLI tool (scriptable, automation-friendly)
 - `WALLET-RECOVERY-TOOL.md` - This documentation file
 
-## 🔍 Technical Details
+##  Technical Details
 
 ### Cryptographic Standards
 
@@ -125,7 +125,7 @@ This is the exact same process used by the official 0xio wallet extension.
 - **Public Key**: 32 bytes (256 bits), encoded in Base64
 - **Address**: "oct" + Base58(SHA-256(publicKey))
 
-## 🚀 Use Cases
+##  Use Cases
 
 1. **Wallet Recovery**: Recover access to your wallet if you've lost your browser extension data
 2. **Multi-Device Setup**: Import your wallet on a new device
@@ -133,7 +133,7 @@ This is the exact same process used by the official 0xio wallet extension.
 4. **Development**: Generate test wallets for development purposes
 5. **Automation**: Use the CLI version in scripts for bulk wallet operations
 
-## ⚙️ Integration Example
+##  Integration Example
 
 You can use the Node.js version as a module in your own code:
 
@@ -157,7 +157,7 @@ async function example() {
 example();
 ```
 
-## 🛡️ Security Best Practices
+##  Security Best Practices
 
 1. **Offline Usage**: For maximum security, use these tools on an air-gapped computer
 2. **Clear Memory**: Close your browser/terminal after use
@@ -166,7 +166,7 @@ example();
 5. **No Screenshots**: Never take screenshots of your seed phrase or private keys
 6. **Physical Backup**: Write down your seed phrase on paper as a backup
 
-## 📝 Troubleshooting
+##  Troubleshooting
 
 ### "Invalid mnemonic: expected 12 words, got X"
 - Ensure your seed phrase has exactly 12 words
@@ -187,11 +187,11 @@ example();
 - Run `npm install tweetnacl` in the same directory
 - Ensure Node.js is installed (`node --version`)
 
-## 📄 License
+##  License
 
 This tool is part of the 0xio Legacy wallet extension project.
 
-## ⚠️ Disclaimer
+##  Disclaimer
 
 Use this tool at your own risk. Always verify the source code before use. The authors are not responsible for any loss of funds due to misuse of this tool.
 

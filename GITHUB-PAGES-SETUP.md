@@ -1,16 +1,16 @@
-# 🚀 GitHub Pages Setup Guide
+#  GitHub Pages Setup Guide
 
 ## Step-by-Step: Enable GitHub Pages for Your Recovery Tool
 
 ### Prerequisites
 
-✅ GitHub account
-✅ Repository created (or ready to create)
-✅ Files ready to upload
+ GitHub account
+ Repository created (or ready to create)
+ Files ready to upload
 
 ---
 
-## 📤 Part 1: Create & Push to GitHub Repository
+##  Part 1: Create & Push to GitHub Repository
 
 ### Step 1: Create Repository on GitHub
 
@@ -20,10 +20,10 @@
    ```
    Repository name: 0xio-recovery-tools
    Description: Recover 0xio wallet from seed phrase
-   Public ☑️ (must be public for free GitHub Pages)
-   ☐ Add a README file (we already have one)
-   ☐ Add .gitignore (we'll add later)
-   ☐ Choose a license (optional: MIT)
+   Public  (must be public for free GitHub Pages)
+    Add a README file (we already have one)
+    Add .gitignore (we'll add later)
+    Choose a license (optional: MIT)
    ```
 4. **Click** "Create repository"
 
@@ -60,11 +60,11 @@ To https://github.com/YOUR-USERNAME/0xio-recovery-tools.git
  * [new branch]      main -> main
 ```
 
-✅ **Files now on GitHub!** Let's enable Pages...
+ **Files now on GitHub!** Let's enable Pages...
 
 ---
 
-## 🌐 Part 2: Enable GitHub Pages
+##  Part 2: Enable GitHub Pages
 
 ### Step 3: Navigate to Repository Settings
 
@@ -73,7 +73,7 @@ To https://github.com/YOUR-USERNAME/0xio-recovery-tools.git
    https://github.com/YOUR-USERNAME/0xio-recovery-tools
    ```
 
-2. **Click** the "Settings" tab (⚙️ icon at the top right of the page)
+2. **Click** the "Settings" tab ( icon at the top right of the page)
    - It's next to "Insights"
    - You'll see it in the horizontal menu bar
 
@@ -83,7 +83,7 @@ To https://github.com/YOUR-USERNAME/0xio-recovery-tools.git
 
 1. **Look at the left sidebar**
 2. **Scroll down** to the "Code and automation" section
-3. **Click** "Pages" (it has a 📄 icon)
+3. **Click** "Pages" (it has a  icon)
 
 ### Step 5: Configure Pages Settings
 
@@ -118,16 +118,16 @@ After clicking Save:
    https://YOUR-USERNAME.github.io/0xio-recovery-tools/
    ```
 
-**Initial build takes 1-2 minutes** ⏱️
+**Initial build takes 1-2 minutes** ⏱
 
 ### Step 7: Verify It's Live
 
 After ~2 minutes:
 
 1. **Refresh the Settings → Pages page**
-2. The blue box will turn **GREEN** ✅:
+2. The blue box will turn **GREEN** :
    ```
-   ✓ Your site is live at
+    Your site is live at
    https://YOUR-USERNAME.github.io/0xio-recovery-tools/
    ```
 
@@ -138,7 +138,7 @@ After ~2 minutes:
 
 ---
 
-## 🎉 You're Done!
+##  You're Done!
 
 ### Your Tool is Now Live At:
 
@@ -147,15 +147,15 @@ https://YOUR-USERNAME.github.io/0xio-recovery-tools/mnemonic-to-wallet.html
 ```
 
 **You can now:**
-- ✅ Access from ANY device with internet
-- ✅ Share the link with others
-- ✅ Use at workplace (no installation needed)
-- ✅ Add to phone home screen
-- ✅ Bookmark it
+-  Access from ANY device with internet
+-  Share the link with others
+-  Use at workplace (no installation needed)
+-  Add to phone home screen
+-  Bookmark it
 
 ---
 
-## 📱 Visual Guide (What You'll See)
+##  Visual Guide (What You'll See)
 
 ### Settings Tab Location
 ```
@@ -202,7 +202,7 @@ Settings
 
 ---
 
-## 🔧 Troubleshooting
+##  Troubleshooting
 
 ### "I don't see the Settings tab"
 
@@ -236,7 +236,7 @@ Settings
 
 ---
 
-## 🚀 Advanced: Custom Domain (Optional)
+##  Advanced: Custom Domain (Optional)
 
 If you want a custom domain like `wallet.yourdomain.com`:
 
@@ -249,13 +249,13 @@ If you want a custom domain like `wallet.yourdomain.com`:
 
 ---
 
-## 📊 Check Deployment Status
+##  Check Deployment Status
 
 ### Method 1: Actions Tab
 
 1. Click "Actions" tab in your repo
 2. You'll see workflow runs for "pages build and deployment"
-3. Green ✓ = Success, Red ✗ = Failed
+3. Green  = Success, Red  = Failed
 
 ### Method 2: Deployments
 
@@ -266,7 +266,7 @@ If you want a custom domain like `wallet.yourdomain.com`:
 
 ---
 
-## 🔄 Updating Your Site
+##  Updating Your Site
 
 Whenever you make changes:
 
@@ -286,7 +286,7 @@ git push
 
 ---
 
-## 📝 Quick Reference Card
+##  Quick Reference Card
 
 | Action | Command |
 |--------|---------|
@@ -297,22 +297,22 @@ git push
 
 ---
 
-## 🎯 Final Checklist
+##  Final Checklist
 
 Before sharing your tool, verify:
 
-- ✅ Repository is public
-- ✅ GitHub Pages is enabled
-- ✅ Source is set to "main" branch, "/ (root)"
-- ✅ Site shows green "✓ Your site is live" message
-- ✅ Opening the URL works
-- ✅ `mnemonic-to-wallet.html` loads correctly
-- ✅ Tool functions (test with sample mnemonic)
-- ✅ All files loaded (check browser console - F12)
+-  Repository is public
+-  GitHub Pages is enabled
+-  Source is set to "main" branch, "/ (root)"
+-  Site shows green " Your site is live" message
+-  Opening the URL works
+-  `mnemonic-to-wallet.html` loads correctly
+-  Tool functions (test with sample mnemonic)
+-  All files loaded (check browser console - F12)
 
 ---
 
-## 💡 Pro Tips
+##  Pro Tips
 
 1. **Bookmark Your Pages URL**: Save it for quick access
 2. **Add to Phone**: Visit on mobile → Add to Home Screen
@@ -322,7 +322,7 @@ Before sharing your tool, verify:
 
 ---
 
-## 🆘 Still Need Help?
+##  Still Need Help?
 
 ### Quick Fixes
 
@@ -349,19 +349,19 @@ Before sharing your tool, verify:
 
 ---
 
-## ✅ Success Indicators
+##  Success Indicators
 
 You know it worked when:
 
-1. ✅ Green box in Settings → Pages: "Your site is live"
-2. ✅ URL opens without 404 error
-3. ✅ Tool interface displays correctly
-4. ✅ Test mnemonic recovery works
-5. ✅ Can access from different devices
+1.  Green box in Settings → Pages: "Your site is live"
+2.  URL opens without 404 error
+3.  Tool interface displays correctly
+4.  Test mnemonic recovery works
+5.  Can access from different devices
 
 ---
 
-**Congratulations! Your wallet recovery tool is now live on the internet!** 🎉
+**Congratulations! Your wallet recovery tool is now live on the internet!** 
 
 Anyone with the URL can use it from anywhere - workplace, home, mobile device, etc.
 

@@ -1,6 +1,6 @@
-# 📂 Recovery-Tools - Complete File Index
+#  Recovery-Tools - Complete File Index
 
-## 📁 Directory Structure
+##  Directory Structure
 
 ```
 Recovery-Tools/
@@ -10,16 +10,16 @@ Recovery-Tools/
 ├── .github-deployment.md          # GitHub Pages deployment guide
 ├── INDEX.md                       # This file - complete file index
 │
-├── mnemonic-to-wallet.html        # 🌐 Browser tool (no installation)
-├── mnemonic-to-wallet.js          # 💻 CLI tool (Node.js)
+├── mnemonic-to-wallet.html        #  Browser tool (no installation)
+├── mnemonic-to-wallet.js          #  CLI tool (Node.js)
 ├── test-recovery.js               # 🧪 Test suite
-├── package.json                   # 📦 NPM configuration
+├── package.json                   #  NPM configuration
 │
 └── libs/
-    └── nacl.min.js                # 🔐 TweetNaCl crypto library
+    └── nacl.min.js                #  TweetNaCl crypto library
 ```
 
-## 📄 File Descriptions
+##  File Descriptions
 
 ### Main Tools (What You'll Use)
 
@@ -47,7 +47,7 @@ Recovery-Tools/
 | **libs/nacl.min.js** | TweetNaCl cryptography library |
 | **node_modules/** | NPM packages (created after `npm install`) |
 
-## 🚀 Quick Access Guide
+##  Quick Access Guide
 
 ### For First-Time Users
 1. Start with: [QUICK-START.md](QUICK-START.md)
@@ -62,7 +62,7 @@ Recovery-Tools/
 2. Deploy: [.github-deployment.md](.github-deployment.md)
 3. Test: `npm test`
 
-## 📊 File Sizes
+##  File Sizes
 
 | File | Size | Notes |
 |------|------|-------|
@@ -71,58 +71,58 @@ Recovery-Tools/
 | libs/nacl.min.js | ~86 KB | Crypto library |
 | **Total (required)** | **~111 KB** | Very lightweight! |
 
-## 🎯 What You Need
+##  What You Need
 
 ### To Use Browser Version
-- ✅ `mnemonic-to-wallet.html`
-- ✅ `libs/nacl.min.js`
-- ✅ Any modern web browser
+-  `mnemonic-to-wallet.html`
+-  `libs/nacl.min.js`
+-  Any modern web browser
 
 ### To Use CLI Version
-- ✅ `mnemonic-to-wallet.js`
-- ✅ `package.json`
-- ✅ Node.js installed
-- ✅ Run `npm install` once
+-  `mnemonic-to-wallet.js`
+-  `package.json`
+-  Node.js installed
+-  Run `npm install` once
 
-## 🔄 Version History
+##  Version History
 
 ### Current Version: 1.0.0
 
 **Features:**
-- ✅ Browser-based recovery tool
-- ✅ CLI recovery tool
-- ✅ Complete test suite
-- ✅ Comprehensive documentation
-- ✅ GitHub deployment ready
+-  Browser-based recovery tool
+-  CLI recovery tool
+-  Complete test suite
+-  Comprehensive documentation
+-  GitHub deployment ready
 
-## 📝 Notes
+##  Notes
 
 ### Dependencies
 - **Browser**: TweetNaCl (included in `libs/`)
 - **CLI**: TweetNaCl (installed via `npm install`)
 
 ### Browser Compatibility
-- Chrome ✅
-- Firefox ✅
-- Safari ✅
-- Edge ✅
-- Mobile browsers ✅
+- Chrome 
+- Firefox 
+- Safari 
+- Edge 
+- Mobile browsers 
 
 ### Platform Compatibility (CLI)
-- macOS ✅
-- Linux ✅
-- Windows ✅
+- macOS 
+- Linux 
+- Windows 
 - Any OS with Node.js ≥14
 
-## 🔐 Security Files
+##  Security Files
 
 All files in this directory are safe and open-source:
-- ✅ No obfuscated code
-- ✅ All source readable
-- ✅ Industry-standard crypto (TweetNaCl)
-- ✅ No network calls
+-  No obfuscated code
+-  All source readable
+-  Industry-standard crypto (TweetNaCl)
+-  No network calls
 
-## 🎓 Learning Path
+##  Learning Path
 
 1. **Complete Beginner**
    - Read: [QUICK-START.md](QUICK-START.md)
@@ -137,7 +137,7 @@ All files in this directory are safe and open-source:
    - Review: Source code in `.js` files
    - Deploy: Follow [.github-deployment.md](.github-deployment.md)
 
-## 🆘 Getting Help
+##  Getting Help
 
 ### Common Tasks
 
@@ -165,23 +165,23 @@ All files in this directory are safe and open-source:
 - Check Node.js: `node --version`
 - Should be ≥14.0.0
 
-## 📞 Support Channels
+##  Support Channels
 
 1. Check documentation first
 2. Review test suite: `npm test`
 3. Open GitHub issue (when deployed)
 
-## 🎉 Ready to Start?
+##  Ready to Start?
 
 Pick your path:
 
-🌐 **Browser User**: Open [mnemonic-to-wallet.html](mnemonic-to-wallet.html)
+ **Browser User**: Open [mnemonic-to-wallet.html](mnemonic-to-wallet.html)
 
-💻 **CLI User**: Run `npm install && node mnemonic-to-wallet.js "your words"`
+ **CLI User**: Run `npm install && node mnemonic-to-wallet.js "your words"`
 
-📖 **Need Help**: Read [QUICK-START.md](QUICK-START.md)
+ **Need Help**: Read [QUICK-START.md](QUICK-START.md)
 
-🚀 **Deploy Online**: Follow [.github-deployment.md](.github-deployment.md)
+ **Deploy Online**: Follow [.github-deployment.md](.github-deployment.md)
 
 ---
 

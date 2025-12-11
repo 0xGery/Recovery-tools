@@ -1,4 +1,4 @@
-# ✅ GitHub Pages Deployment Checklist
+#  GitHub Pages Deployment Checklist
 
 ## Quick Start (TL;DR)
 
@@ -19,7 +19,7 @@ git push -u origin main
 
 ---
 
-## 📋 Complete Step-by-Step Checklist
+##  Complete Step-by-Step Checklist
 
 ### Part 1: Prepare Your Files
 
@@ -43,7 +43,7 @@ git push -u origin main
 - [ ] Fill in:
   - [ ] **Repository name**: `0xio-recovery-tools`
   - [ ] **Description**: `Recover 0xio wallet from seed phrase`
-  - [ ] **Public** ✓ (must be checked!)
+  - [ ] **Public**  (must be checked!)
   - [ ] **Do NOT** check "Add a README file"
   - [ ] **Do NOT** check "Add .gitignore"
 - [ ] Click "Create repository"
@@ -92,7 +92,7 @@ In terminal:
 
 - [ ] On your GitHub repository page, click **"Settings"** tab
   - Located at the top right of the page
-  - Icon looks like ⚙️
+  - Icon looks like 
 
 - [ ] In left sidebar, scroll down to find **"Pages"**
   - Under "Code and automation" section
@@ -126,7 +126,7 @@ In terminal:
 
 - [ ] Blue box should turn **GREEN**:
   ```
-  ✓ Your site is live at
+   Your site is live at
   https://YOUR-USERNAME.github.io/0xio-recovery-tools/
   ```
 
@@ -161,19 +161,19 @@ In terminal:
 
 ---
 
-## 🎯 Success Criteria
+##  Success Criteria
 
-✅ All of these should be TRUE:
+ All of these should be TRUE:
 
-1. ✅ Green checkmark in GitHub Settings → Pages
-2. ✅ URL opens without errors
-3. ✅ Tool interface visible
-4. ✅ Test recovery works
-5. ✅ No console errors (press F12 to check)
+1.  Green checkmark in GitHub Settings → Pages
+2.  URL opens without errors
+3.  Tool interface visible
+4.  Test recovery works
+5.  No console errors (press F12 to check)
 
 ---
 
-## ⚠️ Common Issues & Solutions
+##  Common Issues & Solutions
 
 ### Issue: "Settings tab is missing"
 
@@ -230,7 +230,7 @@ In terminal:
 
 ---
 
-## 🔄 Making Updates Later
+##  Making Updates Later
 
 When you need to update your tool:
 
@@ -249,7 +249,7 @@ git push
 
 ---
 
-## 📱 Mobile Setup (Add to Home Screen)
+##  Mobile Setup (Add to Home Screen)
 
 ### iPhone/iPad
 1. Open URL in Safari
@@ -269,7 +269,7 @@ git push
 
 ---
 
-## 🔐 Security Verification
+##  Security Verification
 
 Before using for real funds:
 
@@ -281,11 +281,11 @@ Before using for real funds:
 - [ ] Verify NO external requests (should only load from github.io)
 - [ ] Disconnect internet
 - [ ] Refresh page (should work from cache)
-- [ ] Tool still functions offline ✓
+- [ ] Tool still functions offline 
 
 ---
 
-## 💾 Backup Your Repo URL
+##  Backup Your Repo URL
 
 Save this somewhere safe:
 
@@ -296,7 +296,7 @@ Live Site: https://YOUR-USERNAME.github.io/0xio-recovery-tools/mnemonic-to-walle
 
 ---
 
-## 🎓 Understanding GitHub Pages
+##  Understanding GitHub Pages
 
 **What is GitHub Pages?**
 - Free web hosting by GitHub
@@ -318,14 +318,14 @@ Live Site: https://YOUR-USERNAME.github.io/0xio-recovery-tools/mnemonic-to-walle
 
 ---
 
-## ✨ You're All Set!
+##  You're All Set!
 
 Once deployed, you can:
-- ✅ Use from any device
-- ✅ Access at work (no installation)
-- ✅ Share with others safely
-- ✅ Update anytime via git push
-- ✅ Use offline (browser cache)
+-  Use from any device
+-  Access at work (no installation)
+-  Share with others safely
+-  Update anytime via git push
+-  Use offline (browser cache)
 
 **Your live URL:**
 ```
@@ -334,7 +334,7 @@ https://YOUR-USERNAME.github.io/0xio-recovery-tools/mnemonic-to-wallet.html
 
 ---
 
-## 📞 Need More Help?
+##  Need More Help?
 
 1. **Re-read this checklist** - check every box
 2. **Check GITHUB-PAGES-SETUP.md** - detailed guide
@@ -353,4 +353,4 @@ https://YOUR-USERNAME.github.io/0xio-recovery-tools/mnemonic-to-wallet.html
 
 ---
 
-**Happy Deploying!** 🚀
+**Happy Deploying!** 

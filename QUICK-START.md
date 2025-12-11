@@ -22,9 +22,9 @@ node mnemonic-to-wallet.js "word1 word2 word3 word4 word5 word6 word7 word8 word
 ## What This Tool Does
 
 Converts your **12-word seed phrase** into:
-- ✅ Wallet Address (e.g., `octH1gDMfecqW...`)
-- ✅ Private Key (Base64 format)
-- ✅ Public Key (Base64 format)
+-  Wallet Address (e.g., `octH1gDMfecqW...`)
+-  Private Key (Base64 format)
+-  Public Key (Base64 format)
 
 ## Example
 
@@ -61,10 +61,10 @@ After recovering your wallet:
 
 ## Security Reminders
 
-🔒 **NEVER** share your seed phrase with anyone
-🔒 **NEVER** enter it on websites you don't trust
-🔒 Use offline for maximum security
-🔒 Clear your screen after recovery
+ **NEVER** share your seed phrase with anyone
+ **NEVER** enter it on websites you don't trust
+ Use offline for maximum security
+ Clear your screen after recovery
 
 ## Troubleshooting
 
@@ -99,7 +99,7 @@ Use the test mnemonic to see it work:
 abandon ability able about above absent absorb abstract absurd abuse access accident
 ```
 
-**⚠️ DO NOT use this test mnemonic for real funds!** It's publicly known.
+** DO NOT use this test mnemonic for real funds!** It's publicly known.
 
 ## Full Documentation
 
