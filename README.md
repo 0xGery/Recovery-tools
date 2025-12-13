@@ -1,306 +1,122 @@
 # 0xio Wallet Recovery Tool
 
-> Recover your 0xio wallet address and private key from your 12-word BIP39 seed phrase
+> **Securely recover your 0xio wallet address and private keys from your 12-word BIP39 seed phrase.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org)
-
-## Quick Start
-
-### Use Online (Easiest - No Installation)
-
-**Just open this URL in your browser:**
-
-```
-https://0xgery.github.io/Recovery-tools/
-```
-
-That's it! Works on **any device** - desktop, mobile, tablet.
-
-### Use Offline (Most Secure)
-
-```bash
-# Clone and run
-git clone https://github.com/0xGery/Recovery-tools.git
-cd Recovery-tools
-npm install
-node mnemonic-to-wallet.js "word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12"
-```
-
-## What This Tool Does
-
-Converts your **12-word seed phrase** into:
-
-| Input | Output |
-|-------|--------|
-| 12-word mnemonic | → Wallet Address (`octXXXXX...`) |
-| | → Private Key (Base64) |
-| | → Public Key (Base64) |
-
-### Example
-
-**Input:**
-```
-abandon ability able about above absent absorb abstract absurd abuse access accident
-```
-
-**Output:**
-```
-Address:      octH1gDMfecqW4ExycT6Pd99nmF2avrZcLQQrphvqjgFxfZ
-Private Key:  KzNHm/LbrzxPiJTpcHJGw8Ozxtvr3LXN3x+oBFO+TtQ=
-Public Key:   U0n18IQBPt+j2DJjHaEFzs3IfmAHiUNFKUhf/a3ImPQ=
-```
-
-**WARNING:** Never use this example mnemonic for real funds! It's publicly known.
-
-## Features
-
-- **Two Versions**: Browser (HTML) & CLI (Node.js)
-- **No Installation** (browser version)
-- **Fully Offline** capable
-- **Mobile Friendly** responsive design
-- **One-Click Copy** to clipboard
-- **100% Client-Side** - no data transmitted
-- **Open Source** - verify the code yourself
-- **BIP39 Standard** compliant
-- **Battle Tested** with comprehensive test suite
-
-## Use Cases
-
-| Scenario | Solution |
-|----------|----------|
-| Lost browser extension data | Recover wallet with seed phrase |
-| New workplace computer | Use browser version (no admin rights needed) |
-| Setting up new device | CLI version for quick import |
-| Verify backup | Confirm seed phrase generates correct address |
-| Mobile recovery | Open in phone browser |
-
-## Security
-
-### Why It's Safe
-
-1. **Client-Side Only**: All cryptography runs in YOUR browser/computer
-2. **Zero Network Calls**: No data sent to any server
-3. **Open Source**: Inspect every line of code
-4. **Standard Crypto**: Uses BIP39, PBKDF2, Ed25519, TweetNaCl
-5. **HTTPS**: GitHub Pages uses SSL/TLS encryption
-
-### Maximum Security Mode
-
-For paranoid users (recommended for large amounts):
-
-```bash
-# 1. Download files
-curl -O https://raw.githubusercontent.com/0xGery/Recovery-tools/main/index.html
-mkdir -p libs
-curl -o libs/nacl.min.js https://raw.githubusercontent.com/0xGery/Recovery-tools/main/libs/nacl.min.js
-
-# 2. Disconnect from internet
-# (Turn off WiFi)
-
-# 3. Open index.html in browser
-open index.html
-
-# 4. Recover wallet
-
-# 5. Close browser completely
-
-# 6. Reconnect to internet
-```
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [QUICK-START.md](QUICK-START.md) | Fast-track guide to recover your wallet |
-| [WALLET-RECOVERY-TOOL.md](WALLET-RECOVERY-TOOL.md) | Complete technical documentation |
-| [GITHUB-PAGES-SETUP.md](GITHUB-PAGES-SETUP.md) | GitHub Pages deployment guide |
-| [INDEX.md](INDEX.md) | Complete file directory |
-
-## Technical Details
-
-### Derivation Process
-
-```
-Mnemonic (12 words)
-    ↓ (PBKDF2-SHA512, 2048 iterations)
-Seed (512 bits)
-    ↓ (HMAC-SHA512 with "Octra seed")
-Master Key (256 bits)
-    ↓ (Ed25519 key pair generation)
-Private Key + Public Key
-    ↓ (SHA-256 → Base58)
-Address (oct + Base58)
-```
-
-### Standards Used
-
-- **BIP39**: Mnemonic generation standard
-- **PBKDF2**: Key derivation (2048 iterations, SHA-512)
-- **Ed25519**: Elliptic curve cryptography
-- **TweetNaCl**: Cryptographic library
-- **HMAC-SHA512**: Master key derivation
-- **SHA-256**: Address hashing
-- **Base58**: Address encoding
-
-### Dependencies
-
-**Browser version:**
-- TweetNaCl (included in `libs/nacl.min.js`)
-
-**CLI version:**
-- Node.js ≥ 14.0.0
-- `tweetnacl` (installed via npm)
-
-## Testing
-
-Run the comprehensive test suite:
-
-```bash
-npm install
-npm test
-```
-
-Expected output:
-```
-✓ Test 1: Valid 12-word mnemonic recovery
-✓ Test 2: Invalid word count rejection
-✓ Test 3: Empty mnemonic rejection
-✓ Test 4: Mnemonic normalization
-✓ Test 5: Case insensitivity
-```
-
-## Advanced Usage
-
-### Use as a Module
-
-```javascript
-const { WalletRecovery } = require('./mnemonic-to-wallet.js');
-
-async function recoverMyWallet() {
-    const recovery = new WalletRecovery();
-    const mnemonic = "your twelve words here...";
-
-    const result = await recovery.recoverFromMnemonic(mnemonic);
-
-    if (result.success) {
-        console.log('Address:', result.address);
-        console.log('Private Key:', result.privateKey);
-        console.log('Public Key:', result.publicKey);
-    } else {
-        console.error('Error:', result.error);
-    }
-}
-
-recoverMyWallet();
-```
-
-### Import into 0xio Extension
-
-After recovering your wallet:
-
-1. Open 0xio wallet extension
-2. Click "Import Wallet"
-3. Fill in:
-   - **Wallet Name**: Any name
-   - **Private Key**: (from recovery tool)
-   - **Wallet Address**: (from recovery tool)
-4. Submit
-
-## Browser Compatibility
-
-| Browser | Supported | Notes |
-|---------|-----------|-------|
-| Chrome | ✓ Yes | Full support |
-| Firefox | ✓ Yes | Full support |
-| Safari | ✓ Yes | Full support |
-| Edge | ✓ Yes | Full support |
-| Opera | ✓ Yes | Full support |
-| Mobile Safari | ✓ Yes | iOS 10+ |
-| Chrome Mobile | ✓ Yes | Android 5+ |
-
-## Contributing
-
-This tool was reverse-engineered from the legacy 0xio extension. Contributions welcome!
-
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/improvement`
-3. Make your changes
-4. Run tests: `npm test`
-5. Commit: `git commit -am 'Add improvement'`
-6. Push: `git push origin feature/improvement`
-7. Open a Pull Request
-
-## License
-
-MIT License - see [LICENSE](LICENSE) file for details
-
-## Disclaimer
-
-**Use at your own risk.**
-
-- This tool is provided as-is with no warranty
-- Always verify the source code before use
-- Never share your seed phrase or private key
-- Authors are not responsible for any loss of funds
-- Not affiliated with official 0xio development team
-
-## Support
-
-### Common Issues
-
-**"Invalid mnemonic: expected 12 words"**
-- Ensure exactly 12 words
-- Separate with single spaces
-- No leading/trailing spaces
-
-**"TweetNaCl not found" (CLI)**
-- Run: `npm install tweetnacl`
-
-**Browser version not loading**
-- Check `libs/nacl.min.js` exists
-- Try different browser
-- Check browser console (F12)
-
-### Get Help
-
-- Check [QUICK-START.md](QUICK-START.md)
-- Read [WALLET-RECOVERY-TOOL.md](WALLET-RECOVERY-TOOL.md)
-- [Open an issue](https://github.com/0xGery/Recovery-tools/issues)
-
-## Similar Projects
-
-- [iancoleman/bip39](https://github.com/iancoleman/bip39) - BIP39 tool
-- [bitcoin/bips](https://github.com/bitcoin/bips) - Bitcoin standards
-
-## Stats
-
-- **Lines of Code**: ~600 (HTML + JS)
-- **Dependencies**: 1 (TweetNaCl)
-- **Test Coverage**: 5 core tests
-- **File Size**: ~35 KB total
-
-## Acknowledgments
-
-- Original 0xio wallet extension developers
-- TweetNaCl cryptography library
-- BIP39 standard authors
-- Open source community
+[![Security](https://img.shields.io/badge/Security-Client%20Side%20Only-blue)](https://github.com/0xGery/Recovery-tools)
 
 ---
 
-<div align="center">
+## Choose Your Recovery Method
 
-**Made for 0xio Wallet Users**
+You can use this tool in two ways: instantly in your browser (no setup) or via the command line (for developers/air-gapped devices).
 
-**Live Tool**: [https://0xgery.github.io/Recovery-tools/](https://0xgery.github.io/Recovery-tools/)
+### Web Version (Easiest & Mobile Friendly)
 
-**Repository**: [https://github.com/0xGery/Recovery-tools](https://github.com/0xGery/Recovery-tools)
+Access the tool directly in your browser. It runs **100% client-side**—your seed phrase is never sent to any server.
 
-[Report Bug](https://github.com/0xGery/Recovery-tools/issues) ·
-[Request Feature](https://github.com/0xGery/Recovery-tools/issues) ·
-[Documentation](WALLET-RECOVERY-TOOL.md)
+**[Launch Recovery Tool](https://0xgery.github.io/Recovery-tools/)**
 
-</div>
+* **Works on:** Desktop, iPhone, Android, Tablet.
+* **No installation required.**
+* **Offline Capable:** Load the page, then disconnect your internet for maximum security.
+
+### CLI Version (Advanced / Offline)
+
+Run the tool locally using Node.js. Ideal for developers or use on strictly air-gapped computers.
+
+```bash
+# 1. Clone the repository
+git clone [https://github.com/0xGery/Recovery-tools.git](https://github.com/0xGery/Recovery-tools.git)
+cd Recovery-tools
+
+# 2. Install dependencies (TweetNaCl)
+npm install
+
+# 3. Recover your wallet (Standard)
+# Usage: node mnemonic-to-wallet.js "your twelve words here"
+node mnemonic-to-wallet.js "abandon ability able about above absent absorb abstract absurd abuse access accident"
+
+# 4. Recover with Custom Derivation Path (Optional)
+# Usage: node mnemonic-to-wallet.js "seed phrase" "path"
+node mnemonic-to-wallet.js "abandon ability able about above absent absorb abstract absurd abuse access accident" "m/345'/0'/0'/0'/0'/0'/0'/0"
+
+```
+
+---
+
+## What This Tool Does
+It takes your **12-word seed phrase** (and optional derivation path) and calculates your wallet credentials using the official Octra/0xio derivation standards.
+
+| Input | Output |
+| --- | --- |
+| **Mnemonic** (Seed Phrase) | ✅ **Wallet Address** (`oct...`) |
+| **Derivation Path** (Optional) | ✅ **Private Key** (Base64) |
+|  | ✅ **Public Key** (Base64) |
+
+### Recovery Example
+**Input:**
+
+> `abandon ability able about above absent absorb abstract absurd abuse access accident`
+
+**Output:**
+
+```text
+Address:      octH1gDMfecqW4ExycT6Pd99nmF2avrZcLQQrphvqjgFxfZ
+Private Key:  KzNHm/LbrzxPiJTpcHJGw8Ozxtvr3LXN3x+oBFO+TtQ=
+Public Key:   U0n18IQBPt+j2DJjHaEFzs3IfmAHiUNFKUhf/a3ImPQ=
+
+```
+
+---
+
+## Security & Privacy
+This tool was designed with security as the priority.
+
+1. **Client-Side Only:** All cryptographic calculations happen inside your browser or local Node.js process.
+2. **Zero Network Calls:** The tool does not send data to any external server. You can verify this by checking the "Network" tab in your browser's developer tools.
+3. **Open Source:** The code is transparent. You can inspect `index.html` and `mnemonic-to-wallet.js` to verify exactly what the code is doing.
+4. **Derivation Standards:** Uses industry-standard **BIP39** (mnemonic), **PBKDF2** (seed generation), and **Ed25519** (signing keys via TweetNaCl).
+
+### Maximum Security Recommendation
+For recovering wallets containing significant funds, we recommend the **Air-Gap Method**:
+
+1. Download the repository zip file or clone it.
+2. Transfer the files to a computer **not connected to the internet**.
+3. Run the CLI tool or open `index.html` in a browser.
+4. Recover your keys and close the tool before reconnecting.
+
+---
+
+## Technical Details
+The tool replicates the exact key derivation logic used by the legacy 0xio extension:
+
+1. **Mnemonic to Seed:** 2048 rounds of PBKDF2-SHA512.
+2. **Master Key:** HMAC-SHA512 derivation using the "Octra seed" salt.
+3. **Keypair:** Ed25519 signing keypair generated from the master key (or derived child key).
+4. **Address:** Base58-encoded SHA-256 hash of the public key, prefixed with `oct`.
+
+---
+**[Technical Reference](https://github.com/0xGery/Recovery-tools/blob/main/TECHNICAL_DOCS.md)** - Deep dive into the crypto standards used.
+
+---
+
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request if you find bugs or want to add features.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## Disclaimer
+**Use at your own risk.**
+This tool is provided "as is" without warranty of any kind. Always verify the address generated matches your expectations before sending funds. **NEVER share your seed phrase or private key with anyone.**
+
+---
+
+**[View Live Tool](https://0xgery.github.io/Recovery-tools/)**

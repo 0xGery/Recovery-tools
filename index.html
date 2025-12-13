@@ -14,7 +14,7 @@
             --border-color: #262626;
             --text-primary: #ededed;
             --text-secondary: #888888;
-            --accent: #3b82f6; /* Modern Tech Blue */
+            --accent: #3b82f6;
             --accent-hover: #2563eb;
             --danger: #ef4444;
             --success: #10b981;
@@ -89,7 +89,7 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 2px; /* For potential gradient border later */
+            padding: 2px;
             position: relative;
             overflow: hidden;
         }
@@ -131,7 +131,7 @@
             letter-spacing: 0.5px;
         }
 
-        textarea {
+        textarea, input[type="text"], select {
             width: 100%;
             background: #000;
             border: 1px solid var(--border-color);
@@ -140,18 +140,37 @@
             font-family: var(--font-mono);
             font-size: 14px;
             padding: 16px;
-            min-height: 120px;
-            resize: vertical;
             transition: all 0.2s ease;
             line-height: 1.6;
         }
 
-        textarea:focus {
+        /* Dropdown specific styles */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            cursor: pointer;
+        }
+
+        /* Hidden class for toggle */
+        .hidden {
+            display: none;
+        }
+        
+        .mt-2 { margin-top: 12px; }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        textarea:focus, input[type="text"]:focus, select:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 1px var(--accent);
         }
 
-        textarea::placeholder {
+        textarea::placeholder, input::placeholder {
             color: #333;
         }
 
@@ -336,6 +355,19 @@
                     <textarea id="mnemonic" spellcheck="false" placeholder="enter word1 word2 word3..."></textarea>
                 </div>
 
+                <div class="input-group">
+                    <label class="label">Derivation Path</label>
+                    
+                    <select id="pathDropdown" onchange="handlePathChange()">
+                        <option value="">Default (Master Key)</option>
+                        <option value="m/345'/0'/0'/0'/0'/0'/0'/0">Octra Standard (m/345'/0'/0'/0'/0'/0'/0'/0)</option>
+                        <option value="custom">Custom Path...</option>
+                    </select>
+
+                    <input type="text" id="derivationPath" class="path-input hidden mt-2" 
+                           placeholder="e.g. m/44'/0'/0'" spellcheck="false">
+                </div>
+
                 <button class="btn-primary" onclick="recoverWallet()">
                     <span id="btn-text">Compute Keys</span>
                     <span id="btn-loader" class="loader" style="display:none"></span>
@@ -394,13 +426,12 @@
         </div>
     </div>
 
-    <!-- Crypto Library from CDN for reliability -->
     <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl.min.js"></script>
 
     <script>
         /**
          * Core Crypto Logic
-         * Preserved from original tool to ensure functionality remains identical.
+         * Supports Hybrid Derivation (Hardened & Non-Hardened)
          */
         class WalletRecovery {
             constructor() {
@@ -475,6 +506,61 @@
                 return { privateKey: hmac.slice(0, 32), chainCode: hmac.slice(32, 64) };
             }
 
+            /* --- SLIP-0010 Hybrid Derivation Logic --- */
+            async deriveChildKey(parentKey, parentChainCode, index) {
+                let data;
+                
+                if (index >= 0x80000000) {
+                    const dataLen = 1 + 32 + 4;
+                    data = new Uint8Array(dataLen);
+                    data[0] = 0x00;
+                    data.set(parentKey, 1);
+                    const view = new DataView(data.buffer);
+                    view.setUint32(33, index, false);
+                } else {
+                    const keyPair = nacl.sign.keyPair.fromSeed(parentKey);
+                    
+                    const dataLen = 32 + 4;
+                    data = new Uint8Array(dataLen);
+                    data.set(keyPair.publicKey, 0);
+                    const view = new DataView(data.buffer);
+                    view.setUint32(32, index, false); 
+                }
+
+                const hmac = await this.hmacSha512(parentChainCode, data);
+
+                return {
+                    privateKey: hmac.slice(0, 32),
+                    chainCode: hmac.slice(32, 64)
+                };
+            }
+
+            async derivePath(rootKey, path) {
+                if (!path || path === 'm' || path === '/' || path.trim() === '') {
+                    return rootKey;
+                }
+
+                const segments = path.toLowerCase().split('/');
+                let currentKey = rootKey;
+
+                for (const segment of segments) {
+                    if (segment === 'm' || segment === '') continue;
+
+                    const isHardened = segment.endsWith("'") || segment.endsWith("h");
+                    let index = parseInt(segment.replace(/['h]/, ''), 10);
+
+                    if (isNaN(index)) throw new Error(`Invalid path segment: ${segment}`);
+
+                    if (isHardened) {
+                        index += 0x80000000;
+                    }
+
+                    currentKey = await this.deriveChildKey(currentKey.privateKey, currentKey.chainCode, index);
+                }
+                return currentKey;
+            }
+            /* --------------------------------------- */
+
             async deriveAddress(publicKey) {
                 try {
                     const publicKeyBytes = this.base64ToBytes(publicKey);
@@ -493,21 +579,22 @@
                 return bytes;
             }
 
-            async recoverFromMnemonic(mnemonic) {
+            async recoverFromMnemonic(mnemonic, derivationPath) {
                 try {
                     const normalizedMnemonic = mnemonic.trim().toLowerCase().replace(/\s+/g, ' ');
                     const words = normalizedMnemonic.split(' ');
                     if (words.length !== 12) throw new Error(`Invalid mnemonic: expected 12 words, got ${words.length}`);
                     
                     const seed = await this.mnemonicToSeed(normalizedMnemonic);
-                    const masterKey = await this.deriveMasterKey(seed);
-                    
-                    // Nacl dependency check
+                    let activeKey = await this.deriveMasterKey(seed);
+                    if (derivationPath) {
+                        activeKey = await this.derivePath(activeKey, derivationPath);
+                    }
                     if (typeof nacl === 'undefined') throw new Error("Crypto library (nacl) not loaded");
 
-                    this.signingKey = nacl.sign.keyPair.fromSeed(masterKey.privateKey);
+                    this.signingKey = nacl.sign.keyPair.fromSeed(activeKey.privateKey);
                     
-                    const privateKeyRaw = masterKey.privateKey;
+                    const privateKeyRaw = activeKey.privateKey;
                     const publicKeyRaw = this.signingKey.publicKey;
                     const privateKeyB64 = this.bytesToBase64(privateKeyRaw);
                     const publicKeyB64 = this.bytesToBase64(publicKeyRaw);
@@ -527,32 +614,45 @@
 
         /* --- UI Logic --- */
         const recovery = new WalletRecovery();
+        function handlePathChange() {
+            const dropdown = document.getElementById('pathDropdown');
+            const input = document.getElementById('derivationPath');
+            
+            if (dropdown.value === 'custom') {
+                input.classList.remove('hidden');
+                input.value = '';
+                input.focus();
+            } else {
+                input.classList.add('hidden');
+                input.value = dropdown.value;
+            }
+        }
 
         async function recoverWallet() {
             const mnemonicInput = document.getElementById('mnemonic');
+            const pathInput = document.getElementById('derivationPath');
             const btnText = document.getElementById('btn-text');
             const btnLoader = document.getElementById('btn-loader');
             const errorEl = document.getElementById('error');
             const outputEl = document.getElementById('output');
             
-            // Reset UI
+            
             errorEl.style.display = 'none';
             outputEl.classList.remove('visible');
             btnText.style.display = 'none';
             btnLoader.style.display = 'inline-block';
 
             const mnemonic = mnemonicInput.value.trim();
+            const path = pathInput.value.trim();
 
             if (!mnemonic) {
                 showError('Please enter your seed phrase');
                 resetBtn();
                 return;
             }
-
-            // Small artificial delay for visual feedback
             setTimeout(async () => {
                 try {
-                    const result = await recovery.recoverFromMnemonic(mnemonic);
+                    const result = await recovery.recoverFromMnemonic(mnemonic, path);
                     resetBtn();
 
                     if (result.success) {
@@ -586,14 +686,9 @@
             const text = element.textContent;
             
             try {
-                // Clipboard API
                 await navigator.clipboard.writeText(text);
-                
-                // Find button to show feedback
                 const btn = element.nextElementSibling;
                 const originalContent = btn.innerHTML;
-                
-                // Show checkmark
                 btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--success').trim()}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 
                 setTimeout(() => {
@@ -603,8 +698,6 @@
                 console.error('Failed to copy', err);
             }
         }
-
-        // Enter key shortcut
         document.getElementById('mnemonic').addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
                 recoverWallet();

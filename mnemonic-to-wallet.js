@@ -5,10 +5,11 @@
  * Recover wallet address and private key from BIP39 seed phrase
  *
  * Usage:
- *   node mnemonic-to-wallet.js "word1 word2 word3 ... word12"
+ * node mnemonic-to-wallet.js "word1 word2 ... word12" [derivation_path]
  *
- * Dependencies:
- *   npm install tweetnacl tweetnacl-util
+ * Examples:
+ * node mnemonic-to-wallet.js "abandon ... art"
+ * node mnemonic-to-wallet.js "abandon ... art" "m/345'/0'/0'/0'/0'/0'/0'/0"
  */
 
 const crypto = require('crypto');
@@ -19,7 +20,7 @@ try {
     nacl = require('tweetnacl');
 } catch (e) {
     console.error('\x1b[31mError: TweetNaCl not found. Please install dependencies:\x1b[0m');
-    console.error('npm install tweetnacl tweetnacl-util');
+    console.error('npm install tweetnacl');
     process.exit(1);
 }
 
@@ -45,11 +46,6 @@ class WalletRecovery {
         return Buffer.from(bytes).toString('hex');
     }
 
-    // Convert hex to bytes
-    hexToBytes(hex) {
-        return Buffer.from(hex, 'hex');
-    }
-
     // SHA-256 hash
     sha256(data) {
         return crypto.createHash('sha256').update(Buffer.from(data)).digest();
@@ -58,7 +54,6 @@ class WalletRecovery {
     // Base58 encoding
     bytesToBase58(bytes) {
         const alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-
         if (bytes.length === 0) return '';
         let num = 0n;
         for (let i = 0; i < bytes.length; i++) {
@@ -73,7 +68,6 @@ class WalletRecovery {
         for (let i = 0; i < bytes.length && bytes[i] === 0; i++) {
             encoded = '1' + encoded;
         }
-
         return encoded;
     }
 
@@ -104,7 +98,7 @@ class WalletRecovery {
         });
     }
 
-    // Derive master key using "Octra seed" HMAC
+    // Derive master key (Root Node m)
     deriveMasterKey(seed) {
         const key = this.stringToBytes("Octra seed");
         const hmac = this.hmacSha512(key, seed);
@@ -113,6 +107,69 @@ class WalletRecovery {
             privateKey: new Uint8Array(hmac.slice(0, 32)),
             chainCode: new Uint8Array(hmac.slice(32, 64))
         };
+    }
+
+    // Derive Child Key (Supports both Hardened and Non-Hardened)
+    deriveChildKey(parentKey, parentChainCode, index) {
+        const indexBuffer = Buffer.alloc(4);
+        indexBuffer.writeUInt32BE(index, 0);
+        
+        let data;
+
+        if (index >= 0x80000000) {
+            // Hardened derivation: 0x00 + parentKey + index
+            data = Buffer.concat([
+                Buffer.from([0x00]),
+                Buffer.from(parentKey),
+                indexBuffer
+            ]);
+        } else {
+            // Non-hardened derivation: parentPublicKey + index
+            // We must derive the public key from the parent private key first
+            const keyPair = nacl.sign.keyPair.fromSeed(parentKey);
+            const publicKey = Buffer.from(keyPair.publicKey);
+            
+            data = Buffer.concat([
+                publicKey,
+                indexBuffer
+            ]);
+        }
+
+        const hmac = this.hmacSha512(parentChainCode, data);
+
+        return {
+            privateKey: new Uint8Array(hmac.slice(0, 32)),
+            chainCode: new Uint8Array(hmac.slice(32, 64))
+        };
+    }
+
+    // Parse path and derive final key
+    derivePath(rootKey, path) {
+        if (!path || path === 'm' || path === '/') {
+            return rootKey;
+        }
+
+        const segments = path.toLowerCase().split('/');
+        let currentKey = rootKey;
+
+        for (const segment of segments) {
+            if (segment === 'm' || segment === '') continue;
+
+            const isHardened = segment.endsWith("'") || segment.endsWith("h");
+            let index = parseInt(segment.replace(/['h]/, ''), 10);
+
+            if (isNaN(index)) throw new Error(`Invalid path segment: ${segment}`);
+
+            // Apply hardening offset if specified
+            if (isHardened) {
+                index += 0x80000000;
+            }
+            // If not hardened, we pass the index as-is (0...2147483647)
+
+            currentKey = this.deriveChildKey(currentKey.privateKey, currentKey.chainCode, index);
+        }
+
+        return currentKey;
     }
 
     // Derive address from public key
@@ -127,34 +184,37 @@ class WalletRecovery {
         }
     }
 
-    // Main recovery function: mnemonic -> address + private key
-    async recoverFromMnemonic(mnemonic) {
+    // Main recovery function
+    async recoverFromMnemonic(mnemonic, derivationPath = null) {
         try {
-            // Normalize mnemonic (trim and single space)
+            // Normalize mnemonic
             const normalizedMnemonic = mnemonic.trim().toLowerCase().replace(/\s+/g, ' ');
-
-            // Validate word count
             const words = normalizedMnemonic.split(' ');
             if (words.length !== 12) {
                 throw new Error(`Invalid mnemonic: expected 12 words, got ${words.length}`);
             }
 
-            // Convert mnemonic to seed
+            // 1. Generate Seed
             const seed = await this.mnemonicToSeed(normalizedMnemonic);
 
-            // Derive master key
-            const masterKey = this.deriveMasterKey(seed);
+            // 2. Generate Master Key
+            let activeKey = this.deriveMasterKey(seed);
 
-            // Create signing key pair
-            this.signingKey = nacl.sign.keyPair.fromSeed(masterKey.privateKey);
+            // 3. Optional Derivation Path
+            if (derivationPath) {
+                activeKey = this.derivePath(activeKey, derivationPath);
+            }
 
-            const privateKeyRaw = masterKey.privateKey;
+            // 4. Generate Keypair
+            this.signingKey = nacl.sign.keyPair.fromSeed(activeKey.privateKey);
+
+            const privateKeyRaw = activeKey.privateKey;
             const publicKeyRaw = this.signingKey.publicKey;
 
             const privateKeyB64 = this.bytesToBase64(privateKeyRaw);
             const publicKeyB64 = this.bytesToBase64(publicKeyRaw);
 
-            // Derive address
+            // 5. Derive Address
             const address = this.deriveAddress(publicKeyB64);
 
             this.privateKey = privateKeyB64;
@@ -165,9 +225,8 @@ class WalletRecovery {
                 address: address,
                 privateKey: privateKeyB64,
                 publicKey: publicKeyB64,
-                seedHex: this.bytesToHex(seed),
-                privateKeyHex: this.bytesToHex(privateKeyRaw),
-                publicKeyHex: this.bytesToHex(publicKeyRaw)
+                derivationPath: derivationPath || "m (Master)",
+                seedHex: this.bytesToHex(seed)
             };
         } catch (error) {
             return {
@@ -181,26 +240,38 @@ class WalletRecovery {
 // CLI Interface
 async function main() {
     console.log('\n\x1b[36m╔════════════════════════════════════════════════╗\x1b[0m');
-    console.log('\x1b[36m║    0xio Wallet Recovery Tool - CLI Version    ║\x1b[0m');
+    console.log('\x1b[36m║    0xio Wallet Recovery Tool + Derivation     ║\x1b[0m');
     console.log('\x1b[36m╚════════════════════════════════════════════════╝\x1b[0m\n');
 
-    // Get mnemonic from command line arguments
     const args = process.argv.slice(2);
-    let mnemonic = args.join(' ');
+    
+    // Simple argument parser to handle optional path
+    let mnemonic = "";
+    let derivationPath = null;
+
+    if (args.length >= 1) mnemonic = args[0];
+    if (args.length >= 2) derivationPath = args[1];
 
     if (!mnemonic) {
         console.log('\x1b[33mUsage:\x1b[0m');
-        console.log('  node mnemonic-to-wallet.js "word1 word2 word3 ... word12"\n');
-        console.log('\x1b[33mExample:\x1b[0m');
-        console.log('  node mnemonic-to-wallet.js "abandon ability able about above absent absorb abstract absurd abuse access accident"\n');
+        console.log('  node mnemonic-to-wallet.js "seed phrase" [derivation_path]\n');
+        console.log('\x1b[33mExamples:\x1b[0m');
+        console.log('  node mnemonic-to-wallet.js "word1 ... word12"');
+        console.log('  node mnemonic-to-wallet.js "word1 ... word12" "m/345\'/0\'/0\'/0\'/0\'/0\'/0\'/0"\n');
         process.exit(1);
     }
 
     console.log('\x1b[90m⚠️  Security Warning: Never share your seed phrase or private key!\x1b[0m\n');
-    console.log('Processing seed phrase...\n');
+    
+    if (derivationPath) {
+        console.log(`Using derivation path: \x1b[33m${derivationPath}\x1b[0m`);
+    } else {
+        console.log(`Using default path: \x1b[33mm (Master Key)\x1b[0m`);
+    }
+    console.log('Processing...\n');
 
     const recovery = new WalletRecovery();
-    const result = await recovery.recoverFromMnemonic(mnemonic);
+    const result = await recovery.recoverFromMnemonic(mnemonic, derivationPath);
 
     if (result.success) {
         console.log('\x1b[32m✓ Wallet recovered successfully!\x1b[0m\n');
@@ -218,18 +289,6 @@ async function main() {
         console.log('  ' + result.publicKey + '\n');
 
         console.log('\x1b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m');
-        console.log('\x1b[90mTechnical Details (Hex Format):\x1b[0m');
-        console.log('\x1b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\x1b[0m\n');
-
-        console.log('\x1b[90mSeed (Hex):\x1b[0m');
-        console.log('\x1b[90m  ' + result.seedHex + '\x1b[0m\n');
-
-        console.log('\x1b[90mPrivate Key (Hex):\x1b[0m');
-        console.log('\x1b[90m  ' + result.privateKeyHex + '\x1b[0m\n');
-
-        console.log('\x1b[90mPublic Key (Hex):\x1b[0m');
-        console.log('\x1b[90m  ' + result.publicKeyHex + '\x1b[0m\n');
-
     } else {
         console.log('\x1b[31m✗ Failed to recover wallet\x1b[0m');
         console.log('\x1b[31mError: ' + result.error + '\x1b[0m\n');
@@ -237,7 +296,6 @@ async function main() {
     }
 }
 
-// Run if called directly
 if (require.main === module) {
     main().catch(error => {
         console.error('\x1b[31mUnexpected error:', error.message, '\x1b[0m');
@@ -245,5 +303,4 @@ if (require.main === module) {
     });
 }
 
-// Export for use as module
 module.exports = { WalletRecovery };
