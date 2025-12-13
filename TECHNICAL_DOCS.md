@@ -65,8 +65,6 @@ The tool replicates the official 0xio wallet generation process:
 * Base58 encoding of the hash.
 * Prefix with `oct`.
 
-
-
 ## Developer Integration Example
 You can use the logic in your own Node.js projects by importing the class:
 
