@@ -18,14 +18,16 @@ npm install tweetnacl
 
 ```
 
-###Standard Recovery (Master Key)Recovers the default wallet address derived at path `m`.
+### Standard Recovery (Master Key)
+Recovers the default wallet address derived at path `m`.
 
 ```bash
 node mnemonic-to-wallet.js "abandon ability able about above absent absorb abstract absurd abuse access accident"
 
 ```
 
-### Advanced: Custom Derivation PathRecovers a derived address/key using a specific path (e.g., Octra derived path).
+### Advanced: Custom Derivation Path
+Recovers a derived address/key using a specific path (e.g., Octra derived path).
 
 ```bash
 # Syntax: node mnemonic-to-wallet.js "mnemonic" "path"
@@ -35,7 +37,8 @@ node mnemonic-to-wallet.js "abandon ability able about above absent absorb abstr
 
 > **Note:** Enclose the derivation path in quotes to prevent your shell from interpreting the apostrophes (`'`).
 
-## How It Works (Derivation Logic)The tool replicates the official 0xio wallet generation process:
+## How It Works (Derivation Logic)
+The tool replicates the official 0xio wallet generation process:
 
 1. **Mnemonic to Seed (BIP39):**
 * Converts 12 words to a binary seed.
@@ -64,7 +67,8 @@ node mnemonic-to-wallet.js "abandon ability able about above absent absorb abstr
 
 
 
-## Developer Integration ExampleYou can use the logic in your own Node.js projects by importing the class:
+## Developer Integration Example
+You can use the logic in your own Node.js projects by importing the class:
 
 ```javascript
 const { WalletRecovery } = require('./mnemonic-to-wallet.js');
@@ -96,12 +100,13 @@ main();
 | **Hashing** | SHA-256, HMAC-SHA512 |
 | **Encoding** | Base58 (Bitcoin alphabet), Base64 |
 
-## Troubleshooting###"Invalid mnemonic: expected 12 words"* Ensure single spaces between words.
+## Troubleshooting
+### "Invalid mnemonic: expected 12 words"* Ensure single spaces between words.
 * Check for trailing spaces at the end of the string.
 
-###"TweetNaCl not found"* Run `npm install tweetnacl` in the tool directory.
+### "TweetNaCl not found"* Run `npm install tweetnacl` in the tool directory.
 
-###"Ed25519 only supports hardened derivation"* You tried to use a path like `m/345/0`.
+### "Ed25519 only supports hardened derivation"* You tried to use a path like `m/345/0`.
 * Ed25519 requires "hardened" indexes. Add an apostrophe: `m/435'/0'`.
 
 ---
